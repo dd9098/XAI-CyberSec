@@ -31,8 +31,8 @@ def replace_path_name(path_name):
             return replace_dic[i]
     return path_name
 
-artifact_dir = 'artifact/malacious/'
-attack_list = [os.path.join(artifact_dir, filename) for filename in ATTACK_LIST]
+ARTIFACT_DIR = 'artifact/malacious/'
+attack_list = [os.path.join(ARTIFACT_DIR, filename) for filename in ATTACK_LIST]
 
 original_edges_count = 0
 graphs = []
@@ -115,7 +115,7 @@ def attack_edge_flag(msg):
     ]
     return any(i in msg for i in attack_nodes)
 
-os.makedirs(f'{artifact_dir}graph_visual/', exist_ok=True)
+os.makedirs(f'{ARTIFACT_DIR}graph_visual/', exist_ok=True)
 
 # Only process communities if there are any
 if communities:
@@ -164,7 +164,7 @@ if communities:
         else:
             # print(dot.source)
             # Render the graph and save it as PDF
-            dot.render(f'{artifact_dir}graph_visual/subgraph_{graph_index}', view=False)
+            dot.render(f'{ARTIFACT_DIR}graph_visual/subgraph_{graph_index}', view=False)
             graph_index += 1
 else:
     print("No communities to process.")

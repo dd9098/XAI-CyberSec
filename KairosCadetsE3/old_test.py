@@ -12,7 +12,7 @@ from old_model import *
 # Setting for logging
 logger = logging.getLogger("reconstruction_logger")
 logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler(artifact_dir + 'reconstruction.log')
+file_handler = logging.FileHandler(ARTIFACT_DIR + 'reconstruction.log')
 file_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(formatter)
@@ -75,7 +75,7 @@ def test(inference_data,
         y_pred = torch.cat([pos_out], dim=0)
         y_true = []
         for m in msg:
-            l = tensor_find(m[node_embedding_dim:-node_embedding_dim], 1) - 1
+            l = tensor_find(m[NODE_EMBEDDING_DIM:-NODE_EMBEDDING_DIM], 1) - 1
             y_true.append(l)
         y_true = torch.tensor(y_true).to(device=device)
         y_true = y_true.reshape(-1).to(torch.long).to(device=device)
@@ -104,8 +104,8 @@ def test(inference_data,
                 continue
 
             t_var = int(t[i])
-            edgeindex = tensor_find(msg[i][node_embedding_dim:-node_embedding_dim], 1)
-            edge_type = rel2id[edgeindex]
+            edgeindex = tensor_find(msg[i][NODE_EMBEDDING_DIM:-NODE_EMBEDDING_DIM], 1)
+            edge_type = REL2ID[edgeindex]
             loss = each_edge_loss[i]
 
             temp_dic = {}
@@ -120,7 +120,7 @@ def test(inference_data,
             edge_list.append(temp_dic)
 
         event_count += len(batch.src)
-        if t[-1] > start_time + time_window_size:
+        if t[-1] > start_time + TIME_WINDOW_SIZE:
             # Here is a checkpoint, which records all edge losses in the current time window
             time_interval = ns_time_to_datetime_US(start_time) + "~" + ns_time_to_datetime_US(t[-1])
 
@@ -157,13 +157,13 @@ def test(inference_data,
 
 def load_data():
     # graph_4_3 - graph_4_5 will be used to initialize node IDF scores.
-    graph_4_3 = torch.load(graphs_dir + "/graph_4_3.TemporalData.simple").to(device=device)
-    graph_4_4 = torch.load(graphs_dir + "/graph_4_4.TemporalData.simple").to(device=device)
-    graph_4_5 = torch.load(graphs_dir + "/graph_4_5.TemporalData.simple").to(device=device)
+    graph_4_3 = torch.load(GRAPHS_DIR + "/graph_4_3.TemporalData.simple").to(device=device)
+    graph_4_4 = torch.load(GRAPHS_DIR + "/graph_4_4.TemporalData.simple").to(device=device)
+    graph_4_5 = torch.load(GRAPHS_DIR + "/graph_4_5.TemporalData.simple").to(device=device)
 
     # Testing set
-    graph_4_6 = torch.load(graphs_dir + "/graph_4_6.TemporalData.simple").to(device=device)
-    graph_4_7 = torch.load(graphs_dir + "/graph_4_7.TemporalData.simple").to(device=device)
+    graph_4_6 = torch.load(GRAPHS_DIR + "/graph_4_6.TemporalData.simple").to(device=device)
+    graph_4_7 = torch.load(GRAPHS_DIR + "/graph_4_7.TemporalData.simple").to(device=device)
 
     return [graph_4_3, graph_4_4, graph_4_5, graph_4_6, graph_4_7]
 
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     graph_4_3, graph_4_4, graph_4_5, graph_4_6, graph_4_7 = load_data()
 
     # load trained model
-    memory, gnn, link_pred, neighbor_loader = torch.load(f"{models_dir}/models.pt",map_location=device, weights_only=False)
+    memory, gnn, link_pred, neighbor_loader = torch.load(f"{MODELS_DIR}/models.pt",map_location=device, weights_only=False)
 
     # Reconstruct the edges in each day
     test(inference_data=graph_4_3,
@@ -188,7 +188,7 @@ if __name__ == "__main__":
          link_pred=link_pred,
          neighbor_loader=neighbor_loader,
          nodeid2msg=nodeid2msg,
-         path=artifact_dir + "graph_4_3/")
+         path=ARTIFACT_DIR + "graph_4_3/")
 
     test(inference_data=graph_4_4,
          memory=memory,
@@ -196,7 +196,7 @@ if __name__ == "__main__":
          link_pred=link_pred,
          neighbor_loader=neighbor_loader,
          nodeid2msg=nodeid2msg,
-         path=artifact_dir + "graph_4_4/")
+         path=ARTIFACT_DIR + "graph_4_4/")
 
     test(inference_data=graph_4_5,
          memory=memory,
@@ -204,7 +204,7 @@ if __name__ == "__main__":
          link_pred=link_pred,
          neighbor_loader=neighbor_loader,
          nodeid2msg=nodeid2msg,
-         path=artifact_dir + "graph_4_5/")
+         path=ARTIFACT_DIR + "graph_4_5/")
 
     test(inference_data=graph_4_6,
          memory=memory,
@@ -212,7 +212,7 @@ if __name__ == "__main__":
          link_pred=link_pred,
          neighbor_loader=neighbor_loader,
          nodeid2msg=nodeid2msg,
-         path=artifact_dir + "graph_4_6/")
+         path=ARTIFACT_DIR + "graph_4_6/")
 
     test(inference_data=graph_4_7,
          memory=memory,
@@ -220,4 +220,4 @@ if __name__ == "__main__":
          link_pred=link_pred,
          neighbor_loader=neighbor_loader,
          nodeid2msg=nodeid2msg,
-         path=artifact_dir + "graph_4_7/")
+         path=ARTIFACT_DIR + "graph_4_7/")

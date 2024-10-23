@@ -12,17 +12,17 @@ from kairos_utils import *
 
 # Ensure artifact directory exists
 try:
-    if not os.path.exists(artifact_dir):
-        os.makedirs(artifact_dir)
+    if not os.path.exists(ARTIFACT_DIR):
+        os.makedirs(ARTIFACT_DIR)
 except Exception as e:
-    print(f"Error creating artifact directory '{artifact_dir}': {e}")
+    print(f"Error creating artifact directory '{ARTIFACT_DIR}': {e}")
     exit(1)
 
 # Setting up logging
 try:
     logger = logging.getLogger("embedding_logger")
     logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler(os.path.join(artifact_dir, 'embedding.log'))
+    file_handler = logging.FileHandler(os.path.join(ARTIFACT_DIR, 'embedding.log'))
     file_handler.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     file_handler.setFormatter(formatter)
@@ -108,7 +108,7 @@ def gen_feature(cur):
             return None
 
         # Featurize the hierarchical node labels
-        FH_string = FeatureHasher(n_features=node_embedding_dim, input_type="string")
+        FH_string = FeatureHasher(n_features=NODE_EMBEDDING_DIM, input_type="string")
         node2higvec = []
         for i in tqdm(node_msg_dic_list, desc="Featurizing node labels"):
             try:
@@ -122,8 +122,8 @@ def gen_feature(cur):
             logger.error("No node features generated.")
             return None
 
-        node2higvec = np.array(node2higvec).reshape([-1, node_embedding_dim])
-        torch.save(node2higvec, os.path.join(artifact_dir, "node2higvec"))
+        node2higvec = np.array(node2higvec).reshape([-1, NODE_EMBEDDING_DIM])
+        torch.save(node2higvec, os.path.join(ARTIFACT_DIR, "node2higvec"))
         logger.info("Node features generated and saved successfully.")
         return node2higvec
     except Exception as e:
@@ -132,17 +132,17 @@ def gen_feature(cur):
 
 def gen_relation_onehot():
     try:
-        num_classes = len(rel2id.keys()) // 2
+        num_classes = len(REL2ID.keys()) // 2
         if num_classes == 0:
             logger.error("Number of relation classes is zero.")
             return None
 
         relvec = torch.nn.functional.one_hot(torch.arange(0, num_classes), num_classes=num_classes)
         rel2vec = {}
-        for i in rel2id.keys():
+        for i in REL2ID.keys():
             try:
                 if not isinstance(i, int):
-                    idx = rel2id[i] - 1
+                    idx = REL2ID[i] - 1
                     if 0 <= idx < num_classes:
                         rel2vec[i] = relvec[idx]
                         rel2vec[idx] = i  # Map index to relation name if needed
@@ -155,7 +155,7 @@ def gen_relation_onehot():
             logger.error("No relations found in rel2id.")
             return None
 
-        torch.save(rel2vec, os.path.join(artifact_dir, "rel2vec"))
+        torch.save(rel2vec, os.path.join(ARTIFACT_DIR, "rel2vec"))
         logger.info("Relation vectors generated and saved successfully.")
         return rel2vec
     except Exception as e:
@@ -184,7 +184,7 @@ def gen_vectorized_graphs(cur, node2higvec, rel2vec, logger):
             for e in events:
                 try:
                     edge_temp = [int(e[1]), int(e[4]), e[2], e[5]]
-                    if e[2] in include_edge_type:
+                    if e[2] in INCLUDE_EDGE_TYPE:
                         edge_list.append(edge_temp)
                 except Exception as ex:
                     logger.error(f"Error processing event {e}: {ex}")
@@ -243,7 +243,7 @@ def gen_vectorized_graphs(cur, node2higvec, rel2vec, logger):
 
             # Save the dataset
             try:
-                save_path = os.path.join(graphs_dir, f"graph_4_{day}.TemporalData.simple")
+                save_path = os.path.join(GRAPHS_DIR, f"graph_4_{day}.TemporalData.simple")
                 torch.save(dataset, save_path)
                 logger.info(f"Saved dataset for day 2018-04-{day} to {save_path}")
             except Exception as e:
@@ -258,10 +258,10 @@ if __name__ == "__main__":
 
     # Create the graphs directory if it doesn't exist
     try:
-        if not os.path.exists(graphs_dir):
-            os.makedirs(graphs_dir)
+        if not os.path.exists(GRAPHS_DIR):
+            os.makedirs(GRAPHS_DIR)
     except Exception as e:
-        logger.error(f"Error creating graphs directory '{graphs_dir}': {e}")
+        logger.error(f"Error creating graphs directory '{GRAPHS_DIR}': {e}")
         exit(1)
 
     # Initialize database connection

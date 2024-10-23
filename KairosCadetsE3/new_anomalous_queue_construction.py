@@ -12,7 +12,7 @@ from config import *
 try:
     logger = logging.getLogger("anomalous_queue_logger")
     logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler(os.path.join(artifact_dir, 'anomalous_queue.log'))
+    file_handler = logging.FileHandler(os.path.join(ARTIFACT_DIR, 'anomalous_queue.log'))
     file_handler.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     file_handler.setFormatter(formatter)
@@ -60,7 +60,7 @@ def compute_IDF():
         file_list = []
 
         for graph_dir in ["graph_4_3", "graph_4_4", "graph_4_5"]:
-            file_path = os.path.join(artifact_dir, graph_dir)
+            file_path = os.path.join(ARTIFACT_DIR, graph_dir)
             if os.path.exists(file_path):
                 file_l = os.listdir(file_path)
                 for i in file_l:
@@ -95,7 +95,7 @@ def compute_IDF():
             IDF = math.log(len(file_list) / (include_count + 1))
             node_IDF[n] = IDF
 
-        torch.save(node_IDF, os.path.join(artifact_dir, "node_IDF"))
+        torch.save(node_IDF, os.path.join(ARTIFACT_DIR, "node_IDF"))
         logger.info("IDF weight calculation complete!")
         return node_IDF, file_list
     except Exception as e:
@@ -214,17 +214,17 @@ if __name__ == "__main__":
         history_list = anomalous_queue_construction(
             node_IDF=node_IDF,
             tw_list=tw_list,
-            graph_dir_path=os.path.join(artifact_dir, "graph_4_5/")
+            graph_dir_path=os.path.join(ARTIFACT_DIR, "graph_4_5/")
         )
-        torch.save(history_list, os.path.join(artifact_dir, "graph_4_5_history_list"))
+        torch.save(history_list, os.path.join(ARTIFACT_DIR, "graph_4_5_history_list"))
 
         # Testing data
         for day in [6, 7]:
             history_list = anomalous_queue_construction(
                 node_IDF=node_IDF,
                 tw_list=tw_list,
-                graph_dir_path=os.path.join(artifact_dir, f"graph_4_{day}/")
+                graph_dir_path=os.path.join(ARTIFACT_DIR, f"graph_4_{day}/")
             )
-            torch.save(history_list, os.path.join(artifact_dir, f"graph_4_{day}_history_list"))
+            torch.save(history_list, os.path.join(ARTIFACT_DIR, f"graph_4_{day}_history_list"))
     except Exception as e:
         logger.error(f"Error in main execution: {e}")

@@ -4,14 +4,14 @@ import os
 import torch
 from kairos_utils import *
 from config import *
-from model import *
+from new_model import *
 
 # Setting for logging
 try:
     logger = logging.getLogger("evaluation_logger")
     logger.setLevel(logging.INFO)
     file_handler = logging.handlers.RotatingFileHandler(
-        os.path.join(artifact_dir, 'evaluation.log'), maxBytes=10*1024*1024, backupCount=5
+        os.path.join(ARTIFACT_DIR, 'evaluation.log'), maxBytes=10*1024*1024, backupCount=5
     )
     file_handler.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -51,7 +51,7 @@ def ground_truth_label():
     try:
         labels = {}
         for folder in ["graph_4_6", "graph_4_7"]:
-            path = os.path.join(artifact_dir, folder)
+            path = os.path.join(ARTIFACT_DIR, folder)
             if os.path.exists(path):
                 filelist = os.listdir(path)
                 for f in filelist:
@@ -81,7 +81,7 @@ def calc_attack_edges():
         files = []
         attack_list = ATTACK_LIST
         for f in attack_list:
-            files.append(os.path.join(artifact_dir, "graph_4_6", f))
+            files.append(os.path.join(ARTIFACT_DIR, "graph_4_6", f))
 
         attack_edge_count = 0
         for fpath in files:
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     try:
         # Validation data
         anomalous_queue_scores = []
-        history_file = os.path.join(artifact_dir, "graph_4_5_history_list")
+        history_file = os.path.join(ARTIFACT_DIR, "graph_4_5_history_list")
         if os.path.exists(history_file):
             history_list = torch.load(history_file, weights_only=False)
             for hl in history_list:
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         pred_label = {}
 
         for folder in ["graph_4_6", "graph_4_7"]:
-            path = os.path.join(artifact_dir, folder)
+            path = os.path.join(ARTIFACT_DIR, folder)
             if os.path.exists(path):
                 filelist = os.listdir(path)
                 for f in filelist:
@@ -126,12 +126,12 @@ if __name__ == "__main__":
                 logger.warning(f"Directory '{path}' does not exist.")
 
         for day in [6, 7]:
-            history_file = os.path.join(artifact_dir, f"graph_4_{day}_history_list")
+            history_file = os.path.join(ARTIFACT_DIR, f"graph_4_{day}_history_list")
             if os.path.exists(history_file):
                 history_list = torch.load(history_file, weights_only=False)
                 for hl in history_list:
                     anomaly_score = torch.prod(torch.tensor([hq['loss'] + 1 for hq in hl], dtype=torch.float)).item()
-                    if anomaly_score > (beta_day6 if day == 6 else beta_day7):
+                    if anomaly_score > (BETA_DAY_6 if day == 6 else BETA_DAY_7):
                         name_list = [i['name'] for i in hl]
                         logger.info(f"Anomalous queue: {name_list}")
                         for i in name_list:

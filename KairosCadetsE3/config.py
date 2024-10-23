@@ -24,28 +24,28 @@ def validate_and_create_dir(path, description):
 ########################################################
 
 # The directory of the raw logs
-raw_dir = "/Users/dd/XAI-Project/CADETS_E3/json/"
-assert os.path.exists(raw_dir), f"Raw log directory '{raw_dir}' does not exist. Please check the path."
+RAW_DIR = "/Users/dd/XAI-Project/XAI-CyberSec/json"
+assert os.path.exists(RAW_DIR), f"Raw log directory '{RAW_DIR}' does not exist. Please check the path."
 
 # The directory to save all artifacts
-artifact_dir = "artifact/"
-validate_and_create_dir(artifact_dir, "Artifact directory")
+ARTIFACT_DIR = "artifact/"
+validate_and_create_dir(ARTIFACT_DIR, "Artifact directory")
 
 # The directory to save the vectorized graphs
-graphs_dir = os.path.join(artifact_dir, "graphs/")
-validate_and_create_dir(graphs_dir, "Graphs directory")
+GRAPHS_DIR = os.path.join(ARTIFACT_DIR, "graphs/")
+validate_and_create_dir(GRAPHS_DIR, "Graphs directory")
 
 # The directory to save the models
-models_dir = os.path.join(artifact_dir, "models/")
-validate_and_create_dir(models_dir, "Models directory")
+MODELS_DIR = os.path.join(ARTIFACT_DIR, "models/")
+validate_and_create_dir(MODELS_DIR, "Models directory")
 
 # The directory to save the results after testing
-test_re = os.path.join(artifact_dir, "test_re/")
-validate_and_create_dir(test_re, "Test results directory")
+TEST_RE = os.path.join(ARTIFACT_DIR, "test_re/")
+validate_and_create_dir(TEST_RE, "Test results directory")
 
 # The directory to save all visualized results
-vis_re = os.path.join(artifact_dir, "vis_re/")
-validate_and_create_dir(vis_re, "Visualization results directory")
+VIS_RE = os.path.join(ARTIFACT_DIR, "vis_re/")
+validate_and_create_dir(VIS_RE, "Visualization results directory")
 
 # Attack List with malicious nodes
 ATTACK_LIST = [
@@ -62,20 +62,20 @@ ATTACK_LIST = [
 ########################################################
 
 # Database name
-database = 'tc_cadet_dataset_db'
+DATABASE = 'tc_cadet_dataset_db'
 
 # Host settings for the database
-host = None  # Set to '/var/run/postgresql/' if needed, otherwise None
+HOST = None  # Set to '/var/run/postgresql/' if needed, otherwise None
 
 # Database user
-user = 'postgres'
+USER = 'postgres'
 
 # The password to the database user (retrieve from environment variable for security)
-password = '#OnePlus8Pro'
+PASSWORD = 'password'
 
 # The port number for Postgres
-port = '5432'
-assert port.isdigit(), "The port number must be numeric."
+PORT = '5432'
+assert PORT.isdigit(), "The port number must be numeric."
 
 ########################################################
 #
@@ -84,14 +84,14 @@ assert port.isdigit(), "The port number must be numeric."
 ########################################################
 
 # The directions of the following edge types need to be reversed
-edge_reversed = [
+EDGE_REVERSED = [
     "EVENT_ACCEPT",
     "EVENT_RECVFROM",
     "EVENT_RECVMSG"
 ]
 
 # The following edges are the types only considered to construct the temporal graph for experiments.
-include_edge_type = [
+INCLUDE_EDGE_TYPE = [
     "EVENT_WRITE",
     "EVENT_READ",
     "EVENT_CLOSE",
@@ -102,7 +102,7 @@ include_edge_type = [
 ]
 
 # The map between edge type and edge ID
-rel2id = {
+REL2ID = {
     1: 'EVENT_WRITE',
     'EVENT_WRITE': 1,
     2: 'EVENT_READ',
@@ -126,28 +126,28 @@ rel2id = {
 ########################################################
 
 # Node Embedding Dimension
-node_embedding_dim = 16
-assert isinstance(node_embedding_dim, int) and node_embedding_dim > 0, "Node embedding dimension must be a positive integer."
+NODE_EMBEDDING_DIM = 16
+assert isinstance(NODE_EMBEDDING_DIM, int) and NODE_EMBEDDING_DIM > 0, "Node embedding dimension must be a positive integer."
 
 # Node State Dimension
-node_state_dim = 100
-assert isinstance(node_state_dim, int) and node_state_dim > 0, "Node state dimension must be a positive integer."
+NODE_STATE_DIM = 100
+assert isinstance(NODE_STATE_DIM, int) and NODE_STATE_DIM > 0, "Node state dimension must be a positive integer."
 
 # Neighborhood Sampling Size
-neighbor_size = 20
-assert isinstance(neighbor_size, int) and neighbor_size > 0, "Neighbor sampling size must be a positive integer."
+NEIGHBOR_SIZE = 20
+assert isinstance(NEIGHBOR_SIZE, int) and NEIGHBOR_SIZE > 0, "Neighbor sampling size must be a positive integer."
 
 # Edge Embedding Dimension
-edge_dim = 100
-assert isinstance(edge_dim, int) and edge_dim > 0, "Edge embedding dimension must be a positive integer."
+EDGE_DIM = 100
+assert isinstance(EDGE_DIM, int) and EDGE_DIM > 0, "Edge embedding dimension must be a positive integer."
 
 # The time encoding Dimension
-time_dim = 100
-assert isinstance(time_dim, int) and time_dim > 0, "Time encoding dimension must be a positive integer."
+TIME_DIM = 100
+assert isinstance(TIME_DIM, int) and TIME_DIM > 0, "Time encoding dimension must be a positive integer."
 
 ########################################################
 #
-#                   Train&Test
+#                   Train & Test
 #
 ########################################################
 
@@ -156,22 +156,22 @@ BATCH = 1024
 assert isinstance(BATCH, int) and BATCH > 0, "Batch size must be a positive integer."
 
 # Parameters for optimizer
-lr = 0.00005
-assert isinstance(lr, float) and lr > 0, "Learning rate must be a positive float."
+LR = 0.00005
+assert isinstance(LR, float) and LR > 0, "Learning rate must be a positive float."
 
-eps = 1e-08
-assert isinstance(eps, float) and eps > 0, "Epsilon must be a positive float."
+EPS = 1e-08
+assert isinstance(EPS, float) and EPS > 0, "Epsilon must be a positive float."
 
-weight_decay = 0.01
-assert isinstance(weight_decay, float) and weight_decay >= 0, "Weight decay must be a non-negative float."
+WEIGHT_DECAY = 0.01
+assert isinstance(WEIGHT_DECAY, float) and WEIGHT_DECAY >= 0, "Weight decay must be a non-negative float."
 
-epoch_num = 50
-assert isinstance(epoch_num, int) and epoch_num > 0, "Epoch number must be a positive integer."
+EPOCH_NUM = 50
+assert isinstance(EPOCH_NUM, int) and EPOCH_NUM > 0, "Epoch number must be a positive integer."
 
 # The size of time window, 60000000000 represents 1 min in nanoseconds.
 # The default setting is 15 minutes.
-time_window_size = 60000000000 * 15
-assert isinstance(time_window_size, int) and time_window_size > 0, "Time window size must be a positive integer."
+TIME_WINDOW_SIZE = 60000000000 * 15
+assert isinstance(TIME_WINDOW_SIZE, int) and TIME_WINDOW_SIZE > 0, "Time window size must be a positive integer."
 
 ########################################################
 #
@@ -179,10 +179,10 @@ assert isinstance(time_window_size, int) and time_window_size > 0, "Time window 
 #
 ########################################################
 
-beta_day6 = 100
-assert isinstance(beta_day6, int) and beta_day6 > 0, "Beta for day 6 must be a positive integer."
+BETA_DAY_6 = 100
+assert isinstance(BETA_DAY_6, int) and BETA_DAY_6 > 0, "Beta for day 6 must be a positive integer."
 
-beta_day7 = 100
-assert isinstance(beta_day7, int) and beta_day7 > 0, "Beta for day 7 must be a positive integer."
+BETA_DAY_7 = 100
+assert isinstance(BETA_DAY_7, int) and BETA_DAY_7 > 0, "Beta for day 7 must be a positive integer."
 
 print("Configuration settings loaded successfully and validated.")

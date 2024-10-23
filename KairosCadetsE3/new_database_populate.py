@@ -339,21 +339,21 @@ if __name__ == "__main__":
     # Process netflow data
     print("Processing netflow data")
     try:
-        store_netflow(file_path=raw_dir, cur=cur, connect=connect)
+        store_netflow(file_path=RAW_DIR, cur=cur, connect=connect)
     except Exception as e:
         print(f"Error in processing netflow data: {e}")
 
     # Process subject data
     print("Processing subject data")
     try:
-        store_subject(file_path=raw_dir, cur=cur, connect=connect)
+        store_subject(file_path=RAW_DIR, cur=cur, connect=connect)
     except Exception as e:
         print(f"Error in processing subject data: {e}")
 
     # Process file data
     print("Processing file data")
     try:
-        store_file(file_path=raw_dir, cur=cur, connect=connect)
+        store_file(file_path=RAW_DIR, cur=cur, connect=connect)
     except Exception as e:
         print(f"Error in processing file data: {e}")
 
@@ -369,10 +369,10 @@ if __name__ == "__main__":
     print("Processing the events")
     try:
         store_event(
-            file_path=raw_dir,
+            file_path=RAW_DIR,
             cur=cur,
             connect=connect,
-            reverse=edge_reversed,
+            reverse=EDGE_REVERSED,
             nodeid2msg=nodeid2msg,
             subject_uuid2hash=subject_uuid2hash,
             file_uuid2hash=file_uuid2hash,

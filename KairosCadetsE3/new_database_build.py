@@ -3,12 +3,12 @@ from config import *
 from psycopg2 import sql
 
 # Database connection parameters
-DB_SUPERUSER = user         # Superuser to create the database
-DB_PASSWORD = password      # Replace with the postgres user's password
-DB_HOST = host              # Replace with the host of the database
-DB_PORT = port
+DB_SUPERUSER = USER         # Superuser to create the database
+DB_PASSWORD = PASSWORD      # Replace with the postgres user's password
+DB_HOST = HOST              # Replace with the host of the database
+DB_PORT = PORT
 
-DB_NAME = database          # Replace with the name of the database to create
+DB_NAME = DATABASE          # Replace with the name of the database to create
 
 def drop_database():
     """

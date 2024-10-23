@@ -21,7 +21,7 @@ try:
 
     # File handler with rotation
     file_handler = RotatingFileHandler(
-        os.path.join(artifact_dir, 'reconstruction.log'),
+        os.path.join(ARTIFACT_DIR, 'reconstruction.log'),
         maxBytes=10*1024*1024,
         backupCount=5
     )
@@ -110,7 +110,7 @@ def test(inference_data,
             y_pred = torch.cat([pos_out], dim=0)
             y_true = []
             for m in msg:
-                l = tensor_find(m[node_embedding_dim:-node_embedding_dim], 1) - 1
+                l = tensor_find(m[NODE_EMBEDDING_DIM:-NODE_EMBEDDING_DIM], 1) - 1
                 y_true.append(l)
             y_true = torch.tensor(y_true).to(device=device)
             y_true = y_true.reshape(-1).to(torch.long).to(device=device)
@@ -140,8 +140,8 @@ def test(inference_data,
 
                 # Extract the edge type and loss for each edge
                 t_var = int(t[i])
-                edgeindex = tensor_find(msg[i][node_embedding_dim:-node_embedding_dim], 1)
-                edge_type = rel2id[edgeindex]
+                edgeindex = tensor_find(msg[i][NODE_EMBEDDING_DIM:-NODE_EMBEDDING_DIM], 1)
+                edge_type = REL2ID[edgeindex]
                 loss = each_edge_loss[i]
 
                 temp_dic = {
@@ -157,7 +157,7 @@ def test(inference_data,
                 edge_list.append(temp_dic)
 
             event_count += len(batch.src)
-            if t[-1] > start_time + time_window_size:
+            if t[-1] > start_time + TIME_WINDOW_SIZE:
                 # Here is a checkpoint, which records all edge losses in the current time window
                 time_interval = ns_time_to_datetime_US(start_time) + "~" + ns_time_to_datetime_US(t[-1])
 
@@ -209,7 +209,7 @@ def load_data():
 
         graphs = []
         for graph_file in graph_files:
-            graph_path = os.path.join(graphs_dir, graph_file)
+            graph_path = os.path.join(GRAPHS_DIR, graph_file)
             if os.path.exists(graph_path):
                 # Suppress warnings only for torch.load
                 with warnings.catch_warnings():
@@ -252,7 +252,7 @@ if __name__ == "__main__":
 
         # load trained model
         try:
-            memory, gnn, link_pred, neighbor_loader = torch.load(f"{models_dir}/models.pt", map_location=device)
+            memory, gnn, link_pred, neighbor_loader = torch.load(f"{MODELS_DIR}/models.pt", map_location=device)
         except Exception as e:
             logger.error(f"Error loading model: {e}")
             print(f"Error loading model: {e}")  # Print error to console
@@ -266,7 +266,7 @@ if __name__ == "__main__":
                  link_pred=link_pred,
                  neighbor_loader=neighbor_loader,
                  nodeid2msg=nodeid2msg,
-                 path=os.path.join(artifact_dir, f"graph_4_{day}"))
+                 path=os.path.join(ARTIFACT_DIR, f"graph_4_{day}"))
     except Exception as e:
         logger.error(f"Error in main execution: {e}")
         print(f"Error in main execution: {e}")  # Print error to console
