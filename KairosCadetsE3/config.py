@@ -126,7 +126,7 @@ REL2ID = {
 ########################################################
 
 # Node Embedding Dimension
-NODE_EMBEDDING_DIM = 16
+NODE_EMBEDDING_DIM = 8
 assert isinstance(NODE_EMBEDDING_DIM, int) and NODE_EMBEDDING_DIM > 0, "Node embedding dimension must be a positive integer."
 
 # Node State Dimension
