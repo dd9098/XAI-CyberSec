@@ -71,7 +71,7 @@ HOST = None  # Set to '/var/run/postgresql/' if needed, otherwise None
 USER = 'postgres'
 
 # The password to the database user (retrieve from environment variable for security)
-PASSWORD = 'password'
+password = '#OnePlus8Pro'
 
 # The port number for Postgres
 PORT = '5432'
