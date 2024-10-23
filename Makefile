@@ -11,10 +11,10 @@ embed_graphs:
 	python new_embedding.py
 
 train:
-	python train.py
+	python old_train.py
 
 test:
-	python new_test.py
+	python old_test.py
 
 anomalous_queue:
 	python new_anomalous_queue_construction.py
