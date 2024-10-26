@@ -271,7 +271,7 @@ def create_node_list(cur, connect):
         print(f"Error creating node list: {e}")
         connect.rollback()
         return {}, {}, {}, {}
-
+    
 def store_event(file_path, cur, connect, reverse, nodeid2msg, subject_uuid2hash, file_uuid2hash, net_uuid2hash):
     """
     Process events from logs and store into the database.
@@ -328,6 +328,20 @@ def store_event(file_path, cur, connect, reverse, nodeid2msg, subject_uuid2hash,
             connect.rollback()
     else:
         print("No event data to insert.")
+
+def get_node2id_row_count(cur):
+    """
+    Get the number of rows in the node2id table.
+    """
+    try:
+        sql = "SELECT COUNT(*) FROM node2id;"
+        cur.execute(sql)
+        count = cur.fetchone()
+        return count[0]
+    except Exception as e:
+        print(f"Error fetching row count from node2id: {e}")
+        return 0
+    
 
 if __name__ == "__main__":
     try:

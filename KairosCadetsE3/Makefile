@@ -14,7 +14,7 @@ train:
 	python old_train.py
 
 test:
-	python old_test.py
+	python new_test.py
 
 anomalous_queue:
 	python new_anomalous_queue_construction.py

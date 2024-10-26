@@ -6,34 +6,27 @@
 import logging
 import os
 import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-from torch.cuda.amp import GradScaler, autocast
-from tqdm import tqdm
 from kairos_utils import *
 from config import *
-from new_model import *
+from model import *
+from tqdm import tqdm
 
-# Setting for logging with rotating file handler
-try:
-    logger = logging.getLogger("training_logger")
-    logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler(os.path.join(ARTIFACT_DIR, 'training.log'))
-    file_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-except Exception as e:
-    print(f"Error setting up logging: {e}")
-    exit(1)
+MAX_NODE_NUM = 1000000
 
 # Device compatibility check
-device = torch.device('cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu')
+min_dst_idx, max_dst_idx = 0, MAX_NODE_NUM
+# Helper vector to map global node indices to local ones.
+assoc = torch.empty(MAX_NODE_NUM, dtype=torch.long, device=device)
 
-# Loss criterion
-criterion = nn.CrossEntropyLoss()
-# Gradient scaler for mixed precision
-scaler = GradScaler()
+# Setting for logging
+logger = logging.getLogger("training_logger")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler(ARTIFACT_DIR + 'training.log')
+file_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
 
 def train(train_data, memory, gnn, link_pred, optimizer, neighbor_loader):
     try:
@@ -45,57 +38,63 @@ def train(train_data, memory, gnn, link_pred, optimizer, neighbor_loader):
         neighbor_loader.reset_state()  # Start with an empty graph.
 
         total_loss = 0
-        batch_size = 1024
-
-        data_loader = DataLoader(train_data, batch_size=batch_size, num_workers=4, pin_memory=True, shuffle=True)
-
-        for batch in data_loader:
+        for i in range(0, len(train_data), 1024):
+            batch = train_data[i:i + 1024]
             optimizer.zero_grad()
 
-            src, pos_dst, t, msg = batch.src.to(device), batch.dst.to(device), batch.t.to(device), batch.msg.to(device)
+            src, pos_dst, t, msg = batch.src, batch.dst, batch.t, batch.msg
 
             n_id = torch.cat([src, pos_dst]).unique()
             n_id, edge_index, e_id = neighbor_loader(n_id)
-            assoc = {n_id[j]: j for j in range(n_id.size(0))}
+            assoc[n_id] = torch.arange(n_id.size(0), device=device)
 
-            # Mixed precision training
-            with autocast():
-                # Get updated memory of all nodes involved in the computation.
-                z, last_update = memory(n_id)
-                z = gnn(z, last_update, edge_index, train_data.t[e_id], train_data.msg[e_id])
-                pos_out = link_pred(z[torch.tensor([assoc[s] for s in src])], z[torch.tensor([assoc[d] for d in pos_dst])])
+            # Get updated memory of all nodes involved in the computation.
+            z, last_update = memory(n_id)
+            z = gnn(z, last_update, edge_index, train_data.t[e_id], train_data.msg[e_id])
+            pos_out = link_pred(z[assoc[src]], z[assoc[pos_dst]])
 
-                y_pred = torch.cat([pos_out], dim=0)
-                y_true = torch.tensor([tensor_find(m[NODE_EMBEDDING_DIM:-NODE_EMBEDDING_DIM], 1) - 1 for m in msg], device=device)
+            y_pred = torch.cat([pos_out], dim=0)
+            y_true = []
+            for m in msg:
+                l = tensor_find(m[NODE_EMBEDDING_DIM:-NODE_EMBEDDING_DIM], 1) - 1
+                y_true.append(l)
 
-                loss = criterion(y_pred, y_true)
+            y_true = torch.tensor(y_true).to(device=device)
+            y_true = y_true.reshape(-1).to(torch.long).to(device=device)
 
-            # Scale the loss for mixed precision
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
+            loss = criterion(y_pred, y_true)
 
+            # Update memory and neighbor loader with ground-truth state.
+            memory.update_state(src, pos_dst, t, msg)
+            neighbor_loader.insert(src, pos_dst)
+
+            loss.backward()
+            optimizer.step()
             memory.detach()
             total_loss += float(loss) * batch.num_events
-        return total_loss / train_data.num_events
-    except Exception as e:
-        logger.error(f"Error in train function: {e}")
-        return None
 
-def load_train_data():
+        return total_loss / train_data.num_events
+
+    except Exception as e:
+        logger.error(f"Error during training: {e}")
+        raise
+
+
+def _train_data():
     try:
-        graph_4_2 = torch.load(os.path.join(GRAPHS_DIR, "graph_4_2.TemporalData.simple"), map_location=device)
-        graph_4_3 = torch.load(os.path.join(GRAPHS_DIR, "graph_4_3.TemporalData.simple"), map_location=device)
-        graph_4_4 = torch.load(os.path.join(GRAPHS_DIR, "graph_4_4.TemporalData.simple"), map_location=device)
+        graph_4_2 = torch.load(GRAPHS_DIR + "graph_4_2.TemporalData.simple").to(device=device)
+        graph_4_3 = torch.load(GRAPHS_DIR + "graph_4_3.TemporalData.simple").to(device=device)
+        graph_4_4 = torch.load(GRAPHS_DIR + "graph_4_4.TemporalData.simple").to(device=device)
         return [graph_4_2, graph_4_3, graph_4_4]
     except Exception as e:
         logger.error(f"Error loading training data: {e}")
-        return []
+        raise
+
 
 def init_models(node_feat_size):
     try:
         memory = TGNMemory(
-            max_node_num,
+            MAX_NODE_NUM,
             node_feat_size,
             NODE_STATE_DIM,
             TIME_DIM,
@@ -117,47 +116,47 @@ def init_models(node_feat_size):
             set(memory.parameters()) | set(gnn.parameters())
             | set(link_pred.parameters()), lr=LR, eps=EPS, weight_decay=WEIGHT_DECAY)
 
-        neighbor_loader = LastNeighborLoader(max_node_num, size=NEIGHBOR_SIZE, device=device)
+        neighbor_loader = LastNeighborLoader(MAX_NODE_NUM, size=NEIGHBOR_SIZE, device=device)
 
         return memory, gnn, link_pred, optimizer, neighbor_loader
+
     except Exception as e:
         logger.error(f"Error initializing models: {e}")
-        return None, None, None, None, None
+        raise
+
 
 if __name__ == "__main__":
-    try:
-        logger.info("Start logging.")
+    logger.info("Start logging.")
 
+    try:
         # Load data for training
         train_data = load_train_data()
-        if not train_data:
-            logger.error("Training data loading failed. Exiting.")
-            exit(1)
 
         # Initialize the models and the optimizer
         node_feat_size = train_data[0].msg.size(-1)
         memory, gnn, link_pred, optimizer, neighbor_loader = init_models(node_feat_size=node_feat_size)
-        if memory is None:
-            logger.error("Model initialization failed. Exiting.")
-            exit(1)
 
         # Train the model
         for epoch in tqdm(range(1, EPOCH_NUM + 1)):
             for g in train_data:
-                loss = train(
-                    train_data=g,
-                    memory=memory,
-                    gnn=gnn,
-                    link_pred=link_pred,
-                    optimizer=optimizer,
-                    neighbor_loader=neighbor_loader
-                )
-                if loss is not None:
-                    logger.info(f'Epoch: {epoch:02d}, Loss: {loss:.4f}')
+                try:
+                    loss = train(
+                        train_data=g,
+                        memory=memory,
+                        gnn=gnn,
+                        link_pred=link_pred,
+                        optimizer=optimizer,
+                        neighbor_loader=neighbor_loader
+                    )
+                    logger.info(f'  Epoch: {epoch:02d}, Loss: {loss:.4f}')
+                except Exception as e:
+                    logger.error(f"Error during epoch {epoch} training: {e}")
 
         # Save the trained model
         model = [memory, gnn, link_pred, neighbor_loader]
+
         os.makedirs(MODELS_DIR, exist_ok=True)
-        torch.save(model, os.path.join(MODELS_DIR, "models.pt"))
+        torch.save(model, f"{MODELS_DIR}/models.pt")
+
     except Exception as e:
-        logger.error(f"Error in main execution: {e}")
+        logger.error(f"Error in main training loop: {e}")

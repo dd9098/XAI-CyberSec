@@ -4,7 +4,7 @@ import os
 import torch
 from kairos_utils import *
 from config import *
-from new_model import *
+from model import *
 
 # Setting for logging
 try:

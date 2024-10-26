@@ -71,9 +71,9 @@ def train(train_data,
     return total_loss / train_data.num_events
 
 def load_train_data():
-    graph_4_2 = torch.load(GRAPHS_DIR + "/graph_4_2.TemporalData.simple").to(device=device)
-    graph_4_3 = torch.load(GRAPHS_DIR + "/graph_4_3.TemporalData.simple").to(device=device)
-    graph_4_4 = torch.load(GRAPHS_DIR + "/graph_4_4.TemporalData.simple").to(device=device)
+    graph_4_2 = torch.load(GRAPHS_DIR + "graph_4_2.TemporalData.simple").to(device=device)
+    graph_4_3 = torch.load(GRAPHS_DIR + "graph_4_3.TemporalData.simple").to(device=device)
+    graph_4_4 = torch.load(GRAPHS_DIR + "graph_4_4.TemporalData.simple").to(device=device)
     return [graph_4_2, graph_4_3, graph_4_4]
 
 def init_models(node_feat_size):
