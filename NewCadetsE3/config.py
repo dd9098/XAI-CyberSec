@@ -5,22 +5,22 @@
 ########################################################
 
 # The directory of the raw logs
-raw_dir = "/Users/ambika/XAI-CyberSec/json/"
+RAW_DIR = "/Users/dd/XAI-Project/XAI-CyberSec/json/"
 
 # The directory to save all artifacts
-artifact_dir = "artifact/"
+ARTIFACT_DIR = "artifact/"
 
 # The directory to save the vectorized graphs
-graphs_dir = artifact_dir + "graphs/"
+GRAPHS_DIR = ARTIFACT_DIR + "graphs/"
 
 # The directory to save the models
-models_dir = artifact_dir + "models/"
+MODELS_DIR = ARTIFACT_DIR + "models/"
 
 # The directory to save the results after testing
-test_re = artifact_dir + "test_re/"
+TEST_RE = ARTIFACT_DIR + "test_re/"
 
 # The directory to save all visualized results
-vis_re = artifact_dir + "vis_re/"
+VIS_RE = ARTIFACT_DIR + "vis_re/"
 
 
 
@@ -31,22 +31,22 @@ vis_re = artifact_dir + "vis_re/"
 ########################################################
 
 # Database name
-database = 'tc_cadet_dataset_db'
+DATABASE = 'tc_cadet_dataset_db'
 
 # Only config this setting when you have the problem mentioned
 # in the Troubleshooting section in settings/environment-settings.md.
 # Otherwise, set it as None
 # host = '/var/run/postgresql/'
-host = None
+HOST = None
 
 # Database user
-user = 'postgres'
+USER = 'postgres'
 
 # The password to the database user
-password = 'Pranjal@15'
+PASSWORD = 'password'
 
 # The port number for Postgres
-port = '5432'
+PORT = '5432'
 
 
 ########################################################
@@ -56,7 +56,7 @@ port = '5432'
 ########################################################
 
 # The directions of the following edge types need to be reversed
-edge_reversed = [
+EDGE_REVERSED = [
     "EVENT_ACCEPT",
     "EVENT_RECVFROM",
     "EVENT_RECVMSG"
@@ -64,7 +64,7 @@ edge_reversed = [
 
 # The following edges are the types only considered to construct the
 # temporal graph for experiments.
-include_edge_type=[
+INCLUDE_EDGE_TYPE=[
     "EVENT_WRITE",
     "EVENT_READ",
     "EVENT_CLOSE",
@@ -75,7 +75,7 @@ include_edge_type=[
 ]
 
 # The map between edge type and edge ID
-rel2id = {
+REL2ID = {
  1: 'EVENT_WRITE',
  'EVENT_WRITE': 1,
  2: 'EVENT_READ',

@@ -13,7 +13,7 @@ from kairos_utils import *
 # Setting for logging
 logger = logging.getLogger("embedding_logger")
 logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler(artifact_dir + 'embedding.log')
+file_handler = logging.FileHandler(ARTIFACT_DIR + 'embedding.log')
 file_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(formatter)
@@ -73,17 +73,17 @@ def gen_feature(cur):
         vec = FH_string.transform([[i]]).toarray()  # Note the double brackets
         node2higvec.append(vec)
     node2higvec = np.array(node2higvec).reshape([-1, node_embedding_dim])
-    torch.save(node2higvec, artifact_dir + "node2higvec")
+    torch.save(node2higvec, ARTIFACT_DIR + "node2higvec")
     return node2higvec
 
 def gen_relation_onehot():
-    relvec=torch.nn.functional.one_hot(torch.arange(0, len(rel2id.keys())//2), num_classes=len(rel2id.keys())//2)
+    relvec=torch.nn.functional.one_hot(torch.arange(0, len(REL2ID.keys())//2), num_classes=len(REL2ID.keys())//2)
     rel2vec={}
-    for i in rel2id.keys():
+    for i in REL2ID.keys():
         if type(i) is not int:
-            rel2vec[i]= relvec[rel2id[i]-1]
-            rel2vec[relvec[rel2id[i]-1]]=i
-    torch.save(rel2vec, artifact_dir + "rel2vec")
+            rel2vec[i]= relvec[REL2ID[i]-1]
+            rel2vec[relvec[REL2ID[i]-1]]=i
+    torch.save(rel2vec, ARTIFACT_DIR + "rel2vec")
     return rel2vec
 
 def gen_vectorized_graphs(cur, node2higvec, rel2vec, logger):
@@ -103,7 +103,7 @@ def gen_vectorized_graphs(cur, node2higvec, rel2vec, logger):
         edge_list = []
         for e in events:
             edge_temp = [int(e[1]), int(e[4]), e[2], e[5]]
-            if e[2] in include_edge_type:
+            if e[2] in INCLUDE_EDGE_TYPE:
                 edge_list.append(edge_temp)
         
         logger.info(f'2018-04-{day}, edge list len: {len(edge_list)}')
@@ -139,7 +139,7 @@ def gen_vectorized_graphs(cur, node2higvec, rel2vec, logger):
 
         # Save the dataset only if msg is not empty
         if msg:
-            torch.save(dataset, graphs_dir + "/graph_4_" + str(day) + ".TemporalData.simple")
+            torch.save(dataset, GRAPHS_DIR + "/graph_4_" + str(day) + ".TemporalData.simple")
         else:
             logger.warning(f'No data to save for day 2018-04-{day}. Skipping save.')
 
@@ -147,8 +147,8 @@ if __name__ == "__main__":
     logger.info("Start logging.")
 
     # Create the graphs directory if it doesn't exist
-    if not os.path.exists(graphs_dir):
-        os.makedirs(graphs_dir)
+    if not os.path.exists(GRAPHS_DIR):
+        os.makedirs(GRAPHS_DIR)
 
     cur, _ = init_database_connection()
     node2higvec = gen_feature(cur=cur)

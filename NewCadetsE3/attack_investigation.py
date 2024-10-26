@@ -30,11 +30,11 @@ def replace_path_name(path_name):
     return path_name
 
 # Users should manually put the detected anomalous time windows here
-artifact_dir = r'artifact/graph_4_7'  # Use a raw string for Windows paths
+ARTIFACT_DIR = r'artifact/graph_4_7'  # Use a raw string for Windows paths
 attack_list = [
-    os.path.join(artifact_dir, '2018-04-07 18_14_38.467310967_2018-04-07 18_29_44.957289774.txt'),
-    os.path.join(artifact_dir, '2018-04-07 18_29_44.957289774_2018-04-07 18_45_53.477266719.txt'),
-    os.path.join(artifact_dir, '2018-04-07 18_45_53.477266719_2018-04-07 19_01_01.807254480.txt')
+    os.path.join(ARTIFACT_DIR, '2018-04-07 18_14_38.467310967_2018-04-07 18_29_44.957289774.txt'),
+    os.path.join(ARTIFACT_DIR, '2018-04-07 18_29_44.957289774_2018-04-07 18_45_53.477266719.txt'),
+    os.path.join(ARTIFACT_DIR, '2018-04-07 18_45_53.477266719_2018-04-07 19_01_01.807254480.txt')
 ]
 
 original_edges_count = 0
@@ -105,7 +105,7 @@ def attack_edge_flag(msg):
     return any(i in msg for i in attack_nodes)
 
 # Plot and render candidate subgraph
-os.makedirs(f'{artifact_dir}/graph_visual/', exist_ok=True)  # Create directory if it doesn't exist
+os.makedirs(f'{ARTIFACT_DIR}/graph_visual/', exist_ok=True)  # Create directory if it doesn't exist
 graph_index = 0
 for c in communities:
     dot = Digraph(name="MyPicture", comment="the test", format="pdf")
@@ -139,5 +139,5 @@ for c in communities:
         except KeyError:
             continue  # Skip if edge does not exist
 
-    dot.render(f'{artifact_dir}/graph_visual/subgraph_{graph_index}', view=False)
+    dot.render(f'{ARTIFACT_DIR}/graph_visual/subgraph_{graph_index}', view=False)
     graph_index += 1

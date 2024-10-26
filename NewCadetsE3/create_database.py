@@ -237,15 +237,15 @@ if __name__ == "__main__":
 
     # There will be 155322 netflow nodes stored in the table
     print("Processing netflow data")
-    store_netflow(file_path=raw_dir, cur=cur, connect=connect)
+    store_netflow(file_path=RAW_DIR, cur=cur, connect=connect)
 
     # There will be 224146 subject nodes stored in the table
     print("Processing subject data")
-    store_subject(file_path=raw_dir, cur=cur, connect=connect)
+    store_subject(file_path=RAW_DIR, cur=cur, connect=connect)
 
     # There will be 234245 file nodes stored in the table
     print("Processing file data")
-    store_file(file_path=raw_dir, cur=cur, connect=connect)
+    store_file(file_path=RAW_DIR, cur=cur, connect=connect)
 
     # There will be 268242 entities stored in the table
     print("Extracting the node list")
@@ -254,10 +254,10 @@ if __name__ == "__main__":
     # There will be 29727441 events stored in the table
     print("Processing the events")
     store_event(
-        file_path=raw_dir,
+        file_path=RAW_DIR,
         cur=cur,
         connect=connect,
-        reverse=edge_reversed,
+        reverse=EDGE_REVERSED,
         nodeid2msg=nodeid2msg,
         subject_uuid2hash=subject_uuid2hash,
         file_uuid2hash=file_uuid2hash,
