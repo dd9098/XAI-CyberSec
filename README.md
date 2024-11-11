@@ -10,3 +10,4 @@ Follow the link to download the pre-trained model: https://drive.google.com/file
 
 Follow the link to the OG Kairos Github: https://github.com/ProvenanceAnalytics/kairos/blob/main/README.md
 
+After runnng make test, find the attack list .txt files and copy them to a folder "artifact/malicious/"
