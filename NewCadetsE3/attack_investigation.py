@@ -30,12 +30,14 @@ def replace_path_name(path_name):
     return path_name
 
 # Users should manually put the detected anomalous time windows here
-ARTIFACT_DIR = r'artifact/graph_4_7'  # Use a raw string for Windows paths
-attack_list = [
-    os.path.join(ARTIFACT_DIR, '2018-04-07 18_14_38.467310967_2018-04-07 18_29_44.957289774.txt'),
-    os.path.join(ARTIFACT_DIR, '2018-04-07 18_29_44.957289774_2018-04-07 18_45_53.477266719.txt'),
-    os.path.join(ARTIFACT_DIR, '2018-04-07 18_45_53.477266719_2018-04-07 19_01_01.807254480.txt')
-]
+# ARTIFACT_DIR = r'artifact/graph_4_7'  # Use a raw string for Windows paths
+
+# Load the detected anomalous time windows
+attack_list = []
+for file in ATTACK_LIST:
+    file = os.path.join(MALICIOUS_DIR, file)
+    attack_list.append(file)
+
 
 original_edges_count = 0
 graphs = []
@@ -91,17 +93,7 @@ for e in gg.edges:
 
 # Define the attack nodes. They are only used to plot the colors of attack nodes and edges.
 def attack_edge_flag(msg):
-    attack_nodes = [
-        '/tmp/vUgefal',
-        'vUgefal',
-        '/var/log/devc',
-        '/etc/passwd',
-        '81.49.200.166',
-        '61.167.39.128',
-        '78.205.235.65',
-        '139.123.0.113',
-        "'nginx'",
-    ]
+    attack_nodes = ATTACK_NODES
     return any(i in msg for i in attack_nodes)
 
 # Plot and render candidate subgraph

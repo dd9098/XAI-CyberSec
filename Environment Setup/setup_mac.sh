@@ -14,7 +14,7 @@ pip install graphviz
 
 # install pytorch and torch_geometric
 conda install pytorch torchvision torchaudio -c pytorch
-pip install torch_geometric
+pip install torch-geometric
 pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric
 
 """

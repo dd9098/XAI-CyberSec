@@ -74,7 +74,10 @@ def load_train_data():
     graph_4_2 = torch.load(GRAPHS_DIR + "/graph_4_2.TemporalData.simple").to(device=device)
     graph_4_3 = torch.load(GRAPHS_DIR + "/graph_4_3.TemporalData.simple").to(device=device)
     graph_4_4 = torch.load(GRAPHS_DIR + "/graph_4_4.TemporalData.simple").to(device=device)
-    return [graph_4_2, graph_4_3, graph_4_4]
+    graph_4_5 = torch.load(GRAPHS_DIR + "/graph_4_5.TemporalData.simple").to(device=device)
+    graph_4_6 = torch.load(GRAPHS_DIR + "/graph_4_6.TemporalData.simple").to(device=device)
+    graph_4_7 = torch.load(GRAPHS_DIR + "/graph_4_7.TemporalData.simple").to(device=device)
+    return [graph_4_2, graph_4_3, graph_4_4, graph_4_5, graph_4_6, graph_4_7]
 
 def init_models(node_feat_size):
     memory = TGNMemory(
@@ -115,7 +118,7 @@ if __name__ == "__main__":
     memory, gnn, link_pred, optimizer, neighbor_loader = init_models(node_feat_size=node_feat_size)
 
     # train the model
-    for epoch in tqdm(range(1, epoch_num+1)):
+    for epoch in tqdm(range(epoch_num)):
         for g in train_data:
             loss = train(
                 train_data=g,

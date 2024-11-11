@@ -149,16 +149,17 @@ def test(inference_data,
     return time_with_loss
 
 def load_data():
-    # graph_4_3 - graph_4_5 will be used to initialize node IDF scores.
-    graph_4_3 = torch.load(GRAPHS_DIR + "/graph_4_3.TemporalData.simple").to(device=device)
-    graph_4_4 = torch.load(GRAPHS_DIR + "/graph_4_4.TemporalData.simple").to(device=device)
-    graph_4_5 = torch.load(GRAPHS_DIR + "/graph_4_5.TemporalData.simple").to(device=device)
+    # graph_4_8 - graph_4_10 will be used to initialize node IDF scores.
+    graph_4_8 = torch.load(GRAPHS_DIR + "/graph_4_8.TemporalData.simple").to(device=device)
+    graph_4_9 = torch.load(GRAPHS_DIR + "/graph_4_9.TemporalData.simple").to(device=device)
+    graph_4_10 = torch.load(GRAPHS_DIR + "/graph_4_10.TemporalData.simple").to(device=device)
 
     # Testing set
-    graph_4_6 = torch.load(GRAPHS_DIR + "/graph_4_6.TemporalData.simple").to(device=device)
-    graph_4_7 = torch.load(GRAPHS_DIR + "/graph_4_7.TemporalData.simple").to(device=device)
+    graph_4_11 = torch.load(GRAPHS_DIR + "/graph_4_11.TemporalData.simple").to(device=device)
+    graph_4_12 = torch.load(GRAPHS_DIR + "/graph_4_12.TemporalData.simple").to(device=device)
+    graph_4_13 = torch.load(GRAPHS_DIR + "/graph_4_13.TemporalData.simple").to(device=device)
 
-    return [graph_4_3, graph_4_4, graph_4_5, graph_4_6, graph_4_7]
+    return [graph_4_8, graph_4_9, graph_4_10, graph_4_11, graph_4_12, graph_4_13]
 
 
 if __name__ == "__main__":
@@ -169,48 +170,27 @@ if __name__ == "__main__":
     nodeid2msg = gen_nodeid2msg(cur=cur)
 
     # Load data
-    graph_4_3, graph_4_4, graph_4_5, graph_4_6, graph_4_7 = load_data()
+    graph_4_8, graph_4_9, graph_4_10, graph_4_11, graph_4_12, graph_4_13 = load_data()
 
     # load trained model
     memory, gnn, link_pred, neighbor_loader = torch.load(f"{MODELS_DIR}/models.pt",map_location=device)
 
-    # Reconstruct the edges in each day
-    test(inference_data=graph_4_3,
-         memory=memory,
-         gnn=gnn,
-         link_pred=link_pred,
-         neighbor_loader=neighbor_loader,
-         nodeid2msg=nodeid2msg,
-         path=ARTIFACT_DIR + "graph_4_3")
+    # Define the list of inference data and paths for graph_4_8 to graph_4_13
+    inference_data_list = [
+        ("graph_4_8", graph_4_8),
+        ("graph_4_9", graph_4_9),
+        ("graph_4_10", graph_4_10),
+        ("graph_4_11", graph_4_11),
+        ("graph_4_12", graph_4_12),
+        ("graph_4_13", graph_4_13)
+    ]
 
-    test(inference_data=graph_4_4,
-         memory=memory,
-         gnn=gnn,
-         link_pred=link_pred,
-         neighbor_loader=neighbor_loader,
-         nodeid2msg=nodeid2msg,
-         path=ARTIFACT_DIR + "graph_4_4")
-
-    test(inference_data=graph_4_5,
-         memory=memory,
-         gnn=gnn,
-         link_pred=link_pred,
-         neighbor_loader=neighbor_loader,
-         nodeid2msg=nodeid2msg,
-         path=ARTIFACT_DIR + "graph_4_5")
-
-    test(inference_data=graph_4_6,
-         memory=memory,
-         gnn=gnn,
-         link_pred=link_pred,
-         neighbor_loader=neighbor_loader,
-         nodeid2msg=nodeid2msg,
-         path=ARTIFACT_DIR + "graph_4_6")
-
-    test(inference_data=graph_4_7,
-         memory=memory,
-         gnn=gnn,
-         link_pred=link_pred,
-         neighbor_loader=neighbor_loader,
-         nodeid2msg=nodeid2msg,
-         path=ARTIFACT_DIR + "graph_4_7")
+    # Loop through each inference data to call the test function
+    for graph_name, inference_data in inference_data_list:
+        test(inference_data=inference_data,
+             memory=memory,
+             gnn=gnn,
+             link_pred=link_pred,
+             neighbor_loader=neighbor_loader,
+             nodeid2msg=nodeid2msg,
+             path=ARTIFACT_DIR + graph_name)

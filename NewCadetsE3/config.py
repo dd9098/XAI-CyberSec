@@ -22,6 +22,43 @@ TEST_RE = ARTIFACT_DIR + "test_re/"
 # The directory to save all visualized results
 VIS_RE = ARTIFACT_DIR + "vis_re/"
 
+MALICIOUS_DIR = ARTIFACT_DIR + "malicious/"
+
+ATTACK_LIST = [ 
+                "2018-04-11 15_07_39.759836073_2018-04-11 16_36_28.177945475.txt",
+                "2018-04-12 13_52_07.886210697_2018-04-12 14_07_16.956181628.txt",
+                "2018-04-12 14_07_16.956181628_2018-04-12 14_22_24.656161850.txt",
+                "2018-04-13 08_49_32.974675080_2018-04-13 09_04_40.324656851.txt",
+                "2018-04-13 09_04_40.324656851_2018-04-13 09_19_46.624637159.txt"
+            ]
+
+ATTACK_NODES =  [
+                    "25.159.96.207",
+                    "76.56.184.25",
+                    "155.162.39.48",
+                    "198.115.236.119",
+                    "53.158.101.118",
+                    "98.15.44.232",
+                    "192.113.144.28",
+                    "vUGefai",
+                    "vUGefal",
+                    "XIM",
+                    "exploit",
+                    "nginx",
+                    "pEja72mA",
+                    "sshd",
+                    "/tmp/tmux-1002",
+                    "/tmp/minions",
+                    "/var/log/netlog",
+                    "/var/log/sendmail",
+                    "/tmp/XIM",
+                    "/tmp/font",
+                    "/tmp/pEja72mA",
+                    "/tmp/memhelp.so",
+                    "eraseme",
+                    "/tmp/done.so"
+                ]
+
 
 
 ########################################################

@@ -39,19 +39,19 @@ def classifier_evaluation(y_test, y_test_pred):
 
 def ground_truth_label():
     labels = {}
-    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_6")
+    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_11")
     for f in filelist:
         labels[f] = 0
-    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_7")
+    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_12")
     for f in filelist:
         labels[f] = 0
 
-    attack_list = [
-        '2018-04-06 11:18:26.126177915~2018-04-06 11:33:35.116170745.txt',
-        '2018-04-06 11:33:35.116170745~2018-04-06 11:48:42.606135188.txt',
-        '2018-04-06 11:48:42.606135188~2018-04-06 12:03:50.186115455.txt',
-        '2018-04-06 12:03:50.186115455~2018-04-06 14:01:32.489584227.txt',
-    ]
+    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_13")
+    for f in filelist:
+        labels[f] = 0
+
+    attack_list = ATTACK_LIST
+
     for i in attack_list:
         labels[i] = 1
 
@@ -59,22 +59,14 @@ def ground_truth_label():
 
 def calc_attack_edges():
     def keyword_hit(line):
-        attack_nodes = [
-            'vUgefal', '/var/log/devc', 'nginx', '81.49.200.166',
-            '78.205.235.65', '200.36.109.214', '139.123.0.113',
-            '152.111.159.139', '61.167.39.128',
-        ]
+        attack_nodes = ATTACK_NODES
         return any(node in line for node in attack_nodes)
 
     files = []
-    attack_list = [
-        '2018-04-06 11:18:26.126177915~2018-04-06 11:33:35.116170745.txt',
-        '2018-04-06 11:33:35.116170745~2018-04-06 11:48:42.606135188.txt',
-        '2018-04-06 11:48:42.606135188~2018-04-06 12:03:50.186115455.txt',
-        '2018-04-06 12:03:50.186115455~2018-04-06 14:01:32.489584227.txt',
-    ]
+    attack_list = ATTACK_LIST
+
     for f in attack_list:
-        files.append(f"{ARTIFACT_DIR}/graph_4_6/{f}")
+        files.append(f"{ARTIFACT_DIR}/graph_4_11/{f}")
 
     attack_edge_count = 0
     for fpath in files:
@@ -89,7 +81,27 @@ if __name__ == "__main__":
 
     # Validation data
     anomalous_queue_scores = []
-    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_5_history_list")
+    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_8_history_list")
+    for hl in history_list:
+        anomaly_score = 0
+        for hq in hl:
+            if anomaly_score == 0:
+                anomaly_score = (anomaly_score + 1) * (hq['loss'] + 1)
+            else:
+                anomaly_score = anomaly_score * (hq['loss'] + 1)
+        anomalous_queue_scores.append(anomaly_score)
+
+    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_9_history_list")
+    for hl in history_list:
+        anomaly_score = 0
+        for hq in hl:
+            if anomaly_score == 0:
+                anomaly_score = (anomaly_score + 1) * (hq['loss'] + 1)
+            else:
+                anomaly_score = anomaly_score * (hq['loss'] + 1)
+        anomalous_queue_scores.append(anomaly_score)
+
+    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_10_history_list")
     for hl in history_list:
         anomaly_score = 0
         for hq in hl:
@@ -104,15 +116,19 @@ if __name__ == "__main__":
     # Evaluating the testing set
     pred_label = {}
 
-    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_6/")
+    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_11/")
     for f in filelist:
         pred_label[f] = 0
 
-    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_7/")
+    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_12/")
     for f in filelist:
         pred_label[f] = 0
 
-    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_6_history_list")
+    filelist = os.listdir(f"{ARTIFACT_DIR}/graph_4_13/")
+    for f in filelist:
+        pred_label[f] = 0
+
+    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_11_history_list")
     for hl in history_list:
         anomaly_score = 0
         for hq in hl:
@@ -127,7 +143,22 @@ if __name__ == "__main__":
                 pred_label[i] = 1
             logger.info(f"Anomaly score: {anomaly_score}")
 
-    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_7_history_list")
+    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_12_history_list")
+    for hl in history_list:
+        anomaly_score = 0
+        for hq in hl:
+            if anomaly_score == 0:
+                anomaly_score = (anomaly_score + 1) * (hq['loss'] + 1)
+            else:
+                anomaly_score = anomaly_score * (hq['loss'] + 1)
+        if anomaly_score > beta_day6:
+            name_list = [i['name'] for i in hl]
+            logger.info(f"Anomalous queue: {name_list}")
+            for i in name_list:
+                pred_label[i] = 1
+            logger.info(f"Anomaly score: {anomaly_score}")
+
+    history_list = torch.load(f"{ARTIFACT_DIR}/graph_4_13_history_list")
     for hl in history_list:
         anomaly_score = 0
         for hq in hl:

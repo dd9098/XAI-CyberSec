@@ -44,17 +44,32 @@ def compute_IDF():
     node_IDF = {}
 
     file_list = []
-    file_path = ARTIFACT_DIR + "graph_4_3/"
+    file_path = ARTIFACT_DIR + "graph_4_8/"
     file_l = os.listdir(file_path)
     for i in file_l:
         file_list.append(file_path + i)
 
-    file_path = ARTIFACT_DIR + "graph_4_4/"
+    file_path = ARTIFACT_DIR + "graph_4_9/"
     file_l = os.listdir(file_path)
     for i in file_l:
         file_list.append(file_path + i)
 
-    file_path = ARTIFACT_DIR + "graph_4_5/"
+    file_path = ARTIFACT_DIR + "graph_4_10/"
+    file_l = os.listdir(file_path)
+    for i in file_l:
+        file_list.append(file_path + i)
+
+    file_path = ARTIFACT_DIR + "graph_4_11/"
+    file_l = os.listdir(file_path)
+    for i in file_l:
+        file_list.append(file_path + i)
+
+    file_path = ARTIFACT_DIR + "graph_4_12/"
+    file_l = os.listdir(file_path)
+    for i in file_l:
+        file_list.append(file_path + i)
+
+    file_path = ARTIFACT_DIR + "graph_4_13/"
     file_l = os.listdir(file_path)
     for i in file_l:
         file_list.append(file_path + i)
@@ -196,21 +211,42 @@ if __name__ == "__main__":
     history_list = anomalous_queue_construction(
         node_IDF=node_IDF,
         tw_list=tw_list,
-        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_5/"
+        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_8/"
     )
-    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_5_history_list")
+    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_8_history_list")
+
+    history_list = anomalous_queue_construction(
+        node_IDF=node_IDF,
+        tw_list=tw_list,
+        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_9/"
+    )
+    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_9_history_list")
+
+    history_list = anomalous_queue_construction(
+        node_IDF=node_IDF,
+        tw_list=tw_list,
+        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_10/"
+    )
+    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_10_history_list")
 
     #Testing date
     history_list = anomalous_queue_construction(
         node_IDF=node_IDF,
         tw_list=tw_list,
-        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_4/"
+        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_11/"
     )
-    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_4_history_list")
+    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_11_history_list")
 
     history_list = anomalous_queue_construction(
         node_IDF=node_IDF,
         tw_list=tw_list,
-        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_7/"
+        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_12/"
     )
-    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_7_history_list")
+    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_12_history_list")
+
+    history_list = anomalous_queue_construction(
+        node_IDF=node_IDF,
+        tw_list=tw_list,
+        graph_dir_path=f"{ARTIFACT_DIR}/graph_4_13/"
+    )
+    torch.save(history_list, f"{ARTIFACT_DIR}/graph_4_13_history_list")
