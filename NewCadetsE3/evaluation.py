@@ -28,13 +28,13 @@ def classifier_evaluation(y_test, y_test_pred):
     accuracy = (tp + tn) / (tp + tn + fp + fn)
     fscore = 2 * (precision * recall) / (precision + recall)
     auc_val = metrics.roc_auc_score(y_test, y_test_pred)
-    
+
     logger.info(f"precision: {precision}")
     logger.info(f"recall: {recall}")
     logger.info(f"fscore: {fscore}")
     logger.info(f"accuracy: {accuracy}")
     logger.info(f"auc_val: {auc_val}")
-    
+
     return precision, recall, fscore, accuracy, auc_val
 
 def ground_truth_label():
