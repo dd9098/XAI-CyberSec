@@ -1,0 +1,4 @@
+dataset_name: 'reddit_hyperlinks'
+dataset_path: ''
+explain_idx_filepath: ''
+explain_idx_filename: 'reddit_hyperlinks'

@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: T-GNNExplainer
+Version: 1.0
+Summary: T-GNNExplainer: Explaining Temporal Graph Models through an Explorer-Navigator Framework
+License: GPLv3
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: scipy
+Requires-Dist: cilog
+Requires-Dist: typed-argument-parser==1.5.4
+Requires-Dist: captum==0.2.0
+Requires-Dist: shap
+Requires-Dist: IPython
+Requires-Dist: tqdm
+Requires-Dist: rdkit-pypi
+Requires-Dist: pandas
+Requires-Dist: sympy
+Requires-Dist: hydra-core
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: mock; extra == "test"
+
+# Download wikipedia and reddit datasets
+Download from http://snap.stanford.edu/jodie/wikipedia.csv and http://snap.stanford.edu/jodie/reddit.csv and put them into ~/workspace/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/data
+
+
+# Preprocess real-world datasets
+```
+cd  ~/workspace/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat
+python process.py -d wikipedia
+python process.py -d reddit
+python process.py -d mooc  # This one has been added. also need to run it at all the other points
+
+```
+
+# Generate simulate dataset
+```
+cd  ~/workspace/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset
+python generate_simulate_dataset.py -d simulate_v1(simulate_v2)
+```
+
+
+
+# Generate explain indexs
+```
+cd  ~/workspace/GNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset
+python tg_dataset.py -d wikipedia(reddit, simulate_v1, simulate_v2) -c index
+```
+
+# Train tgat/tgn model
+tgat:
+```
+cd  ~/workspace/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat
+./train.sh
+./cpckpt.sh
+```
+
+tgn:
+```
+cd  ~/workspace/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgn
+./train.sh
+./cpckpt.sh
+```
+
+# Run our explainer and other  baselines
+```
+cd  ~/workspace/TGNNEXPLAINER-PUBLIC/benchmarks
+./run.sh
+``` 
+
+

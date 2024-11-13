@@ -1,0 +1,278 @@
+run on GPU 0 on dataset reddit_hyperlinks model tgat with seed 2
+=== all explainers ===
+Press enter to continue === STARTING pg_explainer explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+subgraphx_tg_run.py:76: UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+  @hydra.main(config_path="config", config_name="config")
+/home/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC
+device_id: 0
+evaluate: true
+seed: 2
+models:
+  model_saving_dir: ''
+  model_name: tgat
+  ckpt_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth
+  param:
+    num_layers: 2
+    use_time: time
+    agg_method: attn
+    attn_mode: prod
+    num_neighbors: 10
+    num_heads: 2
+    dropout: 0.0
+    uniform_sample_ngh: false
+datasets:
+  dataset_name: reddit_hyperlinks
+  dataset_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/data/reddit_hyperlinks.csv
+  explain_idx_filepath: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/explain_index/reddit_hyperlinks.csv
+  explain_idx_filename: reddit_hyperlinks
+explainers:
+  results_save: false
+  results_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/benchmarks/results
+  mcts_saved_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/saved_mcts_results
+  load_results: false
+  use_gpu: true
+  explainer_name: pg_explainer_tg
+  explainer_ckpt_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/explainer_ckpts
+  debug_mode: false
+  param:
+    explanation_level: event
+    verbose: true
+    train_epochs: 50
+    reg_coefs:
+    - 0.5
+    - 0.1
+    batch_size: 16
+    lr: 0.0001
+
+#Dataset: reddit_hyperlinks, #Users: 20606, #Items: 35776, #Interactions: 286561, #Timestamps: 248453
+#node feats shape: (56383, 88), #edge feats shape: (286562, 88)
+500 events to explain
+[2024-10-28 14:16:05,862][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Aggregation uses attention model
+[2024-10-28 14:16:05,868][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:05,872][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:05,872][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using time encoding
+/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/hydra/_internal/hydra.py:119: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+Error executing job with overrides: ['datasets=reddit_hyperlinks', 'device_id=0', 'explainers=pg_explainer_tg', 'models=tgat', 'seed=2']
+Traceback (most recent call last):
+  File "subgraphx_tg_run.py", line 175, in pipeline
+    state_dict = torch.load(config.models.ckpt_path, map_location="cpu")
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 771, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 270, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 251, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: '/home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth'
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+=== STARTING pg_explainer explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   193    0     0    0   193      0    121 --:--:--  0:00:01 --:--:--   121100   193    0     0    0   193      0    110 --:--:--  0:00:01 --:--:--   110
+=== STARTING subgraphx explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+subgraphx_tg_run.py:76: UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+  @hydra.main(config_path="config", config_name="config")
+/home/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC
+device_id: 0
+evaluate: true
+seed: 2
+models:
+  model_saving_dir: ''
+  model_name: tgat
+  ckpt_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth
+  param:
+    num_layers: 2
+    use_time: time
+    agg_method: attn
+    attn_mode: prod
+    num_neighbors: 10
+    num_heads: 2
+    dropout: 0.0
+    uniform_sample_ngh: false
+datasets:
+  dataset_name: reddit_hyperlinks
+  dataset_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/data/reddit_hyperlinks.csv
+  explain_idx_filepath: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/explain_index/reddit_hyperlinks.csv
+  explain_idx_filename: reddit_hyperlinks
+explainers:
+  results_save: true
+  results_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/benchmarks/results
+  mcts_saved_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/saved_mcts_results
+  load_results: false
+  use_gpu: true
+  explainer_name: subgraphx_tg
+  debug_mode: false
+  explainer_ckpt_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/explainer_ckpts
+  use_pg_explainer: true
+  pg_positive: true
+  parallel_degree: 60
+  param:
+    explanation_level: event
+    verbose: true
+    rollout: 500
+    c_puct: 5
+    min_atoms: 20
+
+#Dataset: reddit_hyperlinks, #Users: 20606, #Items: 35776, #Interactions: 286561, #Timestamps: 248453
+#node feats shape: (56383, 88), #edge feats shape: (286562, 88)
+500 events to explain
+[2024-10-28 14:16:20,681][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Aggregation uses attention model
+[2024-10-28 14:16:20,685][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:20,689][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:20,689][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using time encoding
+/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/hydra/_internal/hydra.py:119: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+Error executing job with overrides: ['datasets=reddit_hyperlinks', 'device_id=0', 'explainers=subgraphx_tg', 'models=tgat', 'seed=2', 'explainers.param.reddit_hyperlinks.c_puct=5']
+Traceback (most recent call last):
+  File "subgraphx_tg_run.py", line 175, in pipeline
+    state_dict = torch.load(config.models.ckpt_path, map_location="cpu")
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 771, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 270, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 251, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: '/home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth'
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+=== ENDING subgraphx_tg explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+=== STARTING attn explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+subgraphx_tg_run.py:76: UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+  @hydra.main(config_path="config", config_name="config")
+/home/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC
+device_id: 0
+evaluate: true
+seed: 2
+models:
+  model_saving_dir: ''
+  model_name: tgat
+  ckpt_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth
+  param:
+    num_layers: 2
+    use_time: time
+    agg_method: attn
+    attn_mode: prod
+    num_neighbors: 10
+    num_heads: 2
+    dropout: 0.0
+    uniform_sample_ngh: false
+datasets:
+  dataset_name: reddit_hyperlinks
+  dataset_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/data/reddit_hyperlinks.csv
+  explain_idx_filepath: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/explain_index/reddit_hyperlinks.csv
+  explain_idx_filename: reddit_hyperlinks
+explainers:
+  results_save: false
+  results_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/benchmarks/results
+  mcts_saved_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/saved_mcts_results
+  load_results: false
+  use_gpu: true
+  explainer_name: attn_explainer_tg
+  debug_mode: false
+  explainer_ckpt_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/explainer_ckpts
+  param:
+    explanation_level: event
+    verbose: true
+
+#Dataset: reddit_hyperlinks, #Users: 20606, #Items: 35776, #Interactions: 286561, #Timestamps: 248453
+#node feats shape: (56383, 88), #edge feats shape: (286562, 88)
+500 events to explain
+[2024-10-28 14:16:34,544][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Aggregation uses attention model
+[2024-10-28 14:16:34,548][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:34,551][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:34,551][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using time encoding
+/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/hydra/_internal/hydra.py:119: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+Error executing job with overrides: ['datasets=reddit_hyperlinks', 'device_id=0', 'explainers=attn_explainer_tg', 'models=tgat', 'seed=2']
+Traceback (most recent call last):
+  File "subgraphx_tg_run.py", line 175, in pipeline
+    state_dict = torch.load(config.models.ckpt_path, map_location="cpu")
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 771, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 270, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 251, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: '/home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth'
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+=== ENDING attn_explainer_tg explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+=== STARTING pbone explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2===
+subgraphx_tg_run.py:76: UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+  @hydra.main(config_path="config", config_name="config")
+/home/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC
+device_id: 0
+evaluate: true
+seed: 2
+models:
+  model_saving_dir: ''
+  model_name: tgat
+  ckpt_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth
+  param:
+    num_layers: 2
+    use_time: time
+    agg_method: attn
+    attn_mode: prod
+    num_neighbors: 10
+    num_heads: 2
+    dropout: 0.0
+    uniform_sample_ngh: false
+datasets:
+  dataset_name: reddit_hyperlinks
+  dataset_path: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/data/reddit_hyperlinks.csv
+  explain_idx_filepath: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/dataset/explain_index/reddit_hyperlinks.csv
+  explain_idx_filename: reddit_hyperlinks
+explainers:
+  results_save: false
+  results_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/benchmarks/results
+  mcts_saved_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/saved_mcts_results
+  load_results: false
+  use_gpu: true
+  explainer_name: pbone_explainer_tg
+  debug_mode: false
+  explainer_ckpt_dir: /home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/explainer_ckpts
+  param:
+    explanation_level: event
+    verbose: true
+
+#Dataset: reddit_hyperlinks, #Users: 20606, #Items: 35776, #Interactions: 286561, #Timestamps: 248453
+#node feats shape: (56383, 88), #edge feats shape: (286562, 88)
+500 events to explain
+[2024-10-28 14:16:48,138][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Aggregation uses attention model
+[2024-10-28 14:16:48,143][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:48,146][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using scaled prod attention
+[2024-10-28 14:16:48,146][tgnnexplainer.xgraph.models.ext.tgat.module][INFO] - Using time encoding
+/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/hydra/_internal/hydra.py:119: UserWarning: Future Hydra versions will no longer change working directory at job runtime by default.
+See https://hydra.cc/docs/1.2/upgrades/1.1_to_1.2/changes_to_job_working_dir/ for more information.
+  ret = run_job(
+Error executing job with overrides: ['datasets=reddit_hyperlinks', 'device_id=0', 'explainers=pbone_explainer_tg', 'models=tgat', 'seed=2']
+Traceback (most recent call last):
+  File "subgraphx_tg_run.py", line 175, in pipeline
+    state_dict = torch.load(config.models.ckpt_path, map_location="cpu")
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 771, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 270, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/raghu/miniforge3/envs/condatick/lib/python3.8/site-packages/torch/serialization.py", line 251, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: '/home/raghu/github/tgnnexplainer/TGNNEXPLAINER-PUBLIC/tgnnexplainer/xgraph/models/ext/tgat/saved_models/tgat_reddit_hyperlinks_2_best.pth'
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+=== ENDING pbone explaining on tgat trained on reddit_hyperlinks on GPU 0 with seed 2 ===
+good job :)
