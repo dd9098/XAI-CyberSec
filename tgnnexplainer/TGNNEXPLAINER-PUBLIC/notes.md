@@ -26,6 +26,8 @@ preprocessing has events, node features and edge features all 3 separated.
 
 subgraphx_tg_run.py
 
+-- replace TGAN & TGN modules.
+
 ckpts not used. trained model is referred to in ckpt code. - there is a ckpts for the explainer model wtf!
 ok that is trained when none exists, chill. other_baselines_tg.py line 188
 
@@ -54,11 +56,54 @@ evaluate() which gives these outputs
  -- need metrics_tg.py
 
 sparsity_tg() in metrics_tg_utils.py is the only function. 
-merge to metrics_tg.py
+merge to metrics_tg.py  # done
+
+## dependencies
+
+from tgnnexplainer.xgraph.dataset.tg_dataset import load_tg_dataset, load_explain_idx
+
+from tgnnexplainer.xgraph.dataset.utils_dataset import construct_tgat_neighbor_finder
+links to graph.py which has only NeighborFinder class, which is called by
+- modules.py called by TGAN class.
+- utils_dataset.py
+
+from tgnnexplainer.xgraph.models.ext.tgat.module import TGAN
+from tgnnexplainer.xgraph.models.ext.tgn.model.tgn import TGN
+from tgnnexplainer.xgraph.models.ext.tgn.utils.data_processing import (
+    compute_time_statistics,
+)
+from tgnnexplainer import ROOT_DIR
+
+        from tgnnexplainer.xgraph.method.subgraphx_tg import SubgraphXTG
+        from tgnnexplainer.xgraph.method.other_baselines_tg import PGExplainerExt
+        from tgnnexplainer.xgraph.method.attn_explainer_tg import AttnExplainerTG
+        from tgnnexplainer.xgraph.method.other_baselines_tg import PBOneExplainerTG
+        from tgnnexplainer.xgraph.method.other_baselines_tg import PGExplainerExt
+        from tgnnexplainer.xgraph.evaluation.metrics_tg import EvaluatorMCTSTG
+        from tgnnexplainer.xgraph.evaluation.metrics_tg import EvaluatorAttenTG        
 
 
-tgnnexplainer\TGNNEXPLAINER-PUBLIC\tgnnexplainer\xgraph\models\ext\tgat\processed
-tgnnexplainer\TGNNEXPLAINER-PUBLIC\tgnnexplainer\xgraph\models\ext\tgat\saved_checkpoints
-tgnnexplainer\TGNNEXPLAINER-PUBLIC\tgnnexplainer\xgraph\saved_mcts_results
-tgnnexplainer\TGNNEXPLAINER-PUBLIC\tgnnexplainer\xgraph\explainer_ckpts
-tgnnexplainer\TGNNEXPLAINER-PUBLIC\tgnnexplainer\xgraph\dataset\data
+
+
+- to do this week
+
+1. Framework Eval
+    - Identify dependencies in bringing together tgnnexplainer to kairos
+    - preprocess kairos artifact data for explainer models. (hetav)
+    - extract node, edge features and event data (hetav)
+    - redirect links to datasets and preprocessed files (me)
+    - replace TGAT & TGN with kairos gnn model. (me)
+        tgat.model_dim is 3 times the node_feats len from preprocessed files.
+        seem to be the only aspect of the base model used by PGExplainerExt
+
+    - unwrap candidate weights for events from aufsc calculations. (me)
+    - attack_investigation highlights only attack instead of our model's predictions? (devang)
+    - what are next steps and what doesnt work 
+
+2. Human Usability Experiments
+    - Experiment design & questions (kaniz & ambika)
+    - what are next steps and what doesnt work
+
+3. Hierachical Explanations
+    - code for Hierarchical Explanation framework (srujan & tejas)
+    - what are next steps and what doesnt work

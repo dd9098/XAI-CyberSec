@@ -26,6 +26,8 @@ print(p)
 from tgnnexplainer.xgraph.dataset.tg_dataset import load_tg_dataset, load_explain_idx
 from tgnnexplainer.xgraph.dataset.utils_dataset import construct_tgat_neighbor_finder
 
+from NewCadetsE3.model import GraphAttentionEmbedding
+
 from tgnnexplainer.xgraph.models.ext.tgat.module import TGAN
 from tgnnexplainer.xgraph.models.ext.tgn.model.tgn import TGN
 from tgnnexplainer.xgraph.models.ext.tgn.utils.data_processing import (
@@ -169,7 +171,10 @@ def pipeline(config: DictConfig):
             dyrep=False,
         )
     else:
-        raise NotImplementedError("Not supported.")
+        model = GraphAttentionEmbedding(
+            
+        )
+        # raise NotImplementedError("Not supported.")
 
     # load model checkpoints
     state_dict = torch.load(config.models.ckpt_path, map_location="cpu")
