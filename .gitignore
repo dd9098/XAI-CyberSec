@@ -16,6 +16,7 @@ artifact.zip
 .idea/
 **/__pycache__
 **/*.ipynb
+!**/preprocessTrial.ipynb
 **/*.eggs
 **/*.vscode
 **/*.coverage
