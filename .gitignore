@@ -23,3 +23,10 @@ artifact.zip
 **/*.DS_Store
 TGIB Explainer/TGIB_Data
 tgnnexplainer/soc-redditHyperlinks-body.tsv
+!tgnnexplainer/Reddit_hyperlinks_preprocess.ipynb
+tgnnexplainer/reddit_hyperlinks.csv
+tgnnexplainer/reddit_hyperlinks_10k.csv
+tgnnexplainer/reddit_hyperlinks_200.csv
+tgnnexplainer/ml_reddit_node.npy
+tgnnexplainer/ml_reddit.npy
+tgnnexplainer/ml_reddit.csv
