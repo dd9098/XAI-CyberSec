@@ -22,3 +22,4 @@ artifact.zip
 **/*.coverage
 **/*.DS_Store
 TGIB Explainer/TGIB_Data
+tgnnexplainer/soc-redditHyperlinks-body.tsv
