@@ -24,6 +24,8 @@ artifact.zip
 TGIB Explainer/TGIB_Data
 tgnnexplainer/soc-redditHyperlinks-body.tsv
 !tgnnexplainer/Reddit_hyperlinks_preprocess.ipynb
+!tgnnexplainer/preprocessTrialHetav.ipynb
+!tgnnexplainer/preprocessKairos.ipynb
 tgnnexplainer/reddit_hyperlinks.csv
 tgnnexplainer/reddit_hyperlinks_10k.csv
 tgnnexplainer/reddit_hyperlinks_200.csv
@@ -31,3 +33,5 @@ tgnnexplainer/ml_reddit_node.npy
 tgnnexplainer/ml_reddit.npy
 tgnnexplainer/ml_reddit.csv
 tgnnexplainer/kairosSample/*
+tgnnexplainer/4_3_Kairos_unprocessed.csv
+tgnnexplainer/combined_data_4_3_Kairos.csv
