@@ -30,3 +30,4 @@ tgnnexplainer/reddit_hyperlinks_200.csv
 tgnnexplainer/ml_reddit_node.npy
 tgnnexplainer/ml_reddit.npy
 tgnnexplainer/ml_reddit.csv
+tgnnexplainer/kairosSample/*
