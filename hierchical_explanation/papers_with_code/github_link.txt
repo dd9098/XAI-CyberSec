@@ -1,16 +1,20 @@
-https://aclanthology.org/2023.findings-acl.798.pdf
-https://github.com/juyiming/HE_examples/tree/master
-As artificial intelligence (AI) systems, particularly those employing deep learning techniques, become increasingly integrated into critical applications, the need for transparency and interpretability has grown correspondingly. Explainable Artificial Intelligence (XAI) seeks to make AI models more understandable to humans without significantly compromising their performance. Hierarchical explanations have emerged as a promising approach within XAI, offering insights at multiple levels of abstraction and granularity.
-This literature review examines the concept of hierarchical explanations in XAI, focusing on three significant contributions:
+- https://aclanthology.org/2023.findings-acl.798.pdf
+    https://github.com/juyiming/HE_examples/tree/master
+    As artificial intelligence (AI) systems, particularly those employing deep learning techniques, become increasingly integrated into 
+    critical applications, the need for transparency and interpretability has grown correspondingly. Explainable Artificial Intelligence (XAI)
+    seeks to make AI models more understandable to humans without significantly compromising their performance. Hierarchical explanations 
+    have emerged as a promising approach within XAI, offering insights at multiple levels of abstraction and granularity.
+    This literature review examines the concept of hierarchical explanations in XAI, focusing on three significant contributions:
 
-"Notions of Explainability and Evaluation Approaches for Explainable Artificial Intelligence" by Vilone and Longo (2021)
-"Explanations in Terms of Hierarchically Organised Middle Level Features" by Apicella et al. (2021)
-"A Hierarchical Explanation Generation Method Based on Feature Interaction Detection" by Ju et al. (2023)
-These works collectively advance our understanding of how hierarchical structures can enhance the interpretability of AI models across different domains.
+        "Notions of Explainability and Evaluation Approaches for Explainable Artificial Intelligence" by Vilone and Longo (2021)
+        "Explanations in Terms of Hierarchically Organised Middle Level Features" by Apicella et al. (2021)
+        "A Hierarchical Explanation Generation Method Based on Feature Interaction Detection" by Ju et al. (2023)
+   
+    These works collectively advance our understanding of how hierarchical structures can enhance the interpretability of AI models across different domains.
 
 
 
 
-https://arxiv.org/pdf/2301.00436v3
-https://github.com/sadafgulshad1/HIPE
+- https://arxiv.org/pdf/2301.00436v3
+    https://github.com/sadafgulshad1/HIPE
 
