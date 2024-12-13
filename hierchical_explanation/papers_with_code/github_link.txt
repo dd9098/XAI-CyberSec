@@ -1,14 +1,10 @@
 - https://aclanthology.org/2023.findings-acl.798.pdf
-    https://github.com/juyiming/HE_examples/tree/master
-    
-
-
-
+  https://github.com/juyiming/HE_examples/tree/master
 
 - https://arxiv.org/pdf/2301.00436v3
-    https://github.com/sadafgulshad1/HIPE
+  https://github.com/sadafgulshad1/HIPE
 
-
-
+- https://arxiv.org/pdf/2102.11934
+  https://github.com/Craven-Biostat-Lab/anamod
 
 
