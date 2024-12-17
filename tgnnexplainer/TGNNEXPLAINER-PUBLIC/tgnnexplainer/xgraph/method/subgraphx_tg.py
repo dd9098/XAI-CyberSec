@@ -20,6 +20,19 @@ from tgnnexplainer.xgraph.method.base_explainer_tg import BaseExplainerTG
 from tgnnexplainer.xgraph.method.other_baselines_tg import _create_explainer_input
 
 
+def calculate_feature_importance(tree_nodes, candidate_events):
+    event_visit_counts = {event: 0 for event in candidate_events}
+    for node in tree_nodes:
+        for event in node.coalition:
+            if event in event_visit_counts:
+                event_visit_counts[event] += node.N
+    
+    total_visits = sum(event_visit_counts.values())
+    feature_importance = {
+        event: count / total_visits for event, count in event_visit_counts.items()
+    }
+    return feature_importance
+
 def to_networkx_tg(events: DataFrame):
     base = events.iloc[:, 0].max() + 1
     g = nx.MultiGraph()
@@ -612,6 +625,27 @@ class SubgraphXTG(BaseExplainerTG):
             
             if return_dict is not None:
                 return_dict[event_idx] = result
+        tree_nodes = self.mcts_state_map.mcts()
+        feature_importance = calculate_feature_importance(tree_nodes, self.mcts_state_map.candidate_events)
+        feature_importance_dir = os.path.join(self.results_dir, "featureImportance")  # Subdirectory within results_dir
+        os.makedirs(feature_importance_dir, exist_ok=True)  
+        file_name = "feature_importance.csv"  # Or .pt if using PyTorch
+        save_path = os.path.join(feature_importance_dir, file_name)
+        print("Feature Importance:")
+        for event, score in feature_importance.items():
+            print(f"Event {event}: Importance Score = {score}")
+        
+        if file_name.endswith(".csv"):
+            with open(save_path, 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(["Event", "Importance Score"])
+                for event, score in feature_importance.items():
+                    writer.writerow([event, score])
+        elif file_name.endswith(".pt"):
+            torch.save(feature_importance, save_path) 
+        else:
+            print("Unsupported file format.")
+
 
         return results_list
         # return tree_nodes, tree_node_x
