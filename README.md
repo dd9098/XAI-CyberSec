@@ -1,37 +1,40 @@
-# XAI in Cybersecurity
-Kairos Project
 
-To setup the environment use the bash file for either mac or windows.
-run the check_mps.py file if you are on a mac with apple silicon.
+# Kairos: XAI in Cybersecurity
 
-Download the following files:
-Follow the link to download the JSON files: https://drive.google.com/drive/folders/1adRsgQqcONj4-KHTujx00_ssCsnYh_ds?usp=sharing
-Follow the link to download the pre-trained model: https://drive.google.com/file/d/1x0ZSJnEn7kLfs3H-__LxtSE1fbd8vR0F/view?usp=drive_link
+Kairos is an Explainable AI (XAI) framework designed for cybersecurity applications. This README outlines the steps for setting up and running the Kairos workflow using the CADETS E3 dataset and provides details on utilizing the pre-trained models for quick evaluation.
 
-Follow the link to the OG Kairos Github: https://github.com/ProvenanceAnalytics/kairos/blob/main/README.md or look at the steps below in Steps in OG Kairos - Demo (DARPA CADETS E3)
+---
 
-After runnng make test, find the attack list.txt files and copy them to a folder "artifact/malicious/"
+## Steps in OG Kairos - Demo (DARPA CADETS E3)
 
-# Steps in OG Kairos - Demo (DARPA CADETS E3)
-In this demo, 
-we use the CADETS E3 dataset to demonstrate Kairos' end-to-end workflow.
-Running this pipeline will reproduce the experimental results reported in our paper.
+This demo reproduces the experimental results reported in our paper using the CADETS E3 dataset to demonstrate Kairos' end-to-end workflow.
 
-1. Follow the description in the [environment settings](settings/environment-settings.md) to set up the required environment for Kairos.
+### 1. Environment Setup
+1. Follow the instructions in the [environment settings](https://github.com/ProvenanceAnalytics/kairos/blob/main/DARPA/settings/environment-settings.md) to configure the required environment for Kairos.
 
-2. Follow the description in the [CADETS E3 database settings](settings/database.md#cadets-e3) to create a database for the workload. 
+### 2. Database Setup
+1. Set up the CADETS E3 database by following the instructions in the [database settings](https://github.com/ProvenanceAnalytics/kairos/blob/main/DARPA/settings/database.md).
 
-3. Edit CADETS E3's [config.py](CADETS_E3/config.py) to set the variable `raw_dir` as the absolute path of the folder in which your raw CADETS E3 data is located. 
-In addition, change the database-related variables (e.g. username, password, etc.) based on your database configurations.
+### 3. Configuration
+1. Edit the CADETS E3 configuration file:
+   - Open `NewCadetsE3/config.py`.
+   - Set the variable `raw_dir` to the absolute path of the folder containing the raw CADETS E3 data.
+   - Update database-related variables (e.g., `username`, `password`, etc.) to match your database configuration.
 
-4. Run the Kairos workflow using the commands:
-```commandline
-cd CADETS_E3
-make pipeline
-```
+### 4. Run the Workflow
+1. Navigate to the NewCadetsE3 directory:
+   ```bash
+   cd NewCadetsE3
+   ```
+2. Execute the Kairos workflow (Recomended to run the pipeline in parts, check makefile):
+   ```bash
+   make pipeline
+   ```
 
-5. Once the execution is finished, the artifacts will be stored in the `CADETS_E3/artifact/` folder. The folder structure looks like this:
+### 5. Generated Artifacts
+1. Once the workflow completes, artifacts will be stored in the `NewCadetsE3/artifact/` folder.
 
+#### Folder Structure:
 ```
 - artifact/
     - graphs/
@@ -49,42 +52,39 @@ make pipeline
     - evaluation.log
     - some other artifacts
 ```
-where
-* `graphs/` contains all the vectorized graphs.
 
-* `graph_4_*/` contains the reconstruction results of the graphs.
+#### Explanation of Artifacts:
+- `graphs/`: Contains all vectorized graphs.
+- `graph_4_*/`: Reconstruction results of graphs.
+- `graph_visual/`: Summary graphs for attack investigation.
+- `embedding.log`: Records statistics during graph vectorization.
+- `training.log`: Records model training losses.
+- `reconstruction.log`: Records reconstruction statistics during testing.
+- `anomalous_queue.log`: Logs anomalous time windows flagged by Kairos.
+- `evaluation.log`: Contains evaluation results for the CADETS E3 dataset.
 
-* `graph_visual/` contains all the summary graphs for attack investigation.
+---
 
-* `embedding.log` records some statistics, e.g., the number of edges in the graphs, during graph vectorization.
+## Using the Pre-trained Model
+### Quick Evaluation with Pre-trained Models
+1. To skip training and use the pre-trained models:
+   - Download the pre-trained models from [this link](https://drive.google.com/drive/u/0/folders/1YAKoO3G32xlYrCs4BuATt1h_hBvvEB6C), this project is CADETS-E3.
+   - Replace the model under `artifacts/models/`
 
-* `training.log` records the losses during model training.
+2. Run the following commands to evaluate and detect anomalies:
+   ```bash
+   make test
+   make anomaly_detection
+   ```
 
-* `reconstruction.log` records some reconstruction statistics during testing.
+---
 
-* `anomalous_queue.log` records the anomalous time windows flagged by Kairos.
+## Follow-up Ideas
+### TGNN Explainer
+- Explore TGNN (Temporal Graph Neural Network) explainers for better interpretability of Kairos outputs.
 
-* `evaluation.log` records the evaluation results for the CADETS E3 dataset.
+### TGIB Explainer
+- Use Temporal Graph Information Bottleneck (TGIB) techniques to explain and analyze key patterns detected by Kairos.
 
-
-### Using the Pre-trained Model
-
-As expected, 
-Kairos detection performance relies on the quality of the trained GNN models,
-but model training takes a significant amount of time.
-You can skip training and directly use our pre-trained models
-for quick evaluations.
-To do so,
-simply provide the file path of the pre-trained model
-(which you can download from [here](https://drive.google.com/drive/u/0/folders/1YAKoO3G32xlYrCs4BuATt1h_hBvvEB6C))
-in `test.py` (in [this](https://github.com/ProvenanceAnalytics/kairos/blob/37044bfd30393c0a0543d3b98f2049cd039cc013/DARPA/CADETS_E3/test.py#L170) line of code) and then run:
-```commandline
-make test
-make anomaly_detection
+For additional details, please refer to the official [Kairos GitHub Repository](https://github.com/ProvenanceAnalytics/kairos).
 ```
-
-# Follow up Ideas
-
-TGNN - Explainer
-
-TGIB Explainer 
