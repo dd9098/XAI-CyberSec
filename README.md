@@ -76,6 +76,18 @@ This demo reproduces the experimental results reported in our paper using the CA
    make test
    make anomaly_detection
    ```
+---
+## How to run on RC (rc.rit.edu)
+1. Follow the path:
+   ```bash
+   cd /shared/rc/malont/CADETS_E3/XAI-CyberSec/NewCadetsE3/
+   ```
+2. Run the test, anomaly_detection & attack_investigation
+   ```bash
+   make test
+   make anomaly_detection
+   make attack_investigation
+   ```
 
 ---
 
